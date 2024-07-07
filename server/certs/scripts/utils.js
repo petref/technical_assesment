@@ -4,7 +4,6 @@ import fs from "fs";
 
 // Load RSA keys
 export const privateKeyPem = fs.readFileSync(`${join(import.meta.dirname, "../" + process.env.SSL_KEYS_PATH)}privateKey.pem`, 'utf8');
-console.log(privateKeyPem);
 export const privateKey = forge.pki.privateKeyFromPem(privateKeyPem);
 export const publicKeyPem = fs.readFileSync(`${join(import.meta.dirname, "../" + process.env.SSL_KEYS_PATH)}publicKey.pem`, 'utf8');
 
