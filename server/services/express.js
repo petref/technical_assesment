@@ -14,7 +14,7 @@ app.use(cors());
 const server = https.createServer({
     cert: fs.readFileSync("./certs/ssl/cert.pem"),
     key: fs.readFileSync('./certs/ssl/key.pem'),
-    passphrase: "Greutrece@33"
+    passphrase: process.env.SSL_PASS,
 }, app);
 
 
