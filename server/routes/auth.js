@@ -1,15 +1,16 @@
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    // Validate user credentials (in a real application, you should check against a database)
-    if (username === 'user' && password === 'password') {
-        const user = { username };
-        const token = generateToken(user);
-        res.json({ token });
-    } else {
-        res.sendStatus(403);
-    }
-});
+import express from "express";
+import {auth} from "../controllers/auth.js";
+import { authenticateToken } from "../services/jwt.js"
 
-app.get('/public-key', authenticateToken, (req, res) => {
+import { publicKeyPem } from "../certs/scripts/utils.js";
+
+
+const router = express.Router();
+
+router.post('/login', auth);
+
+router.get('/public-key', authenticateToken, (req, res) => {
     res.json({ publicKey: publicKeyPem });
 });
+
+export default router;
