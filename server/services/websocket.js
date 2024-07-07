@@ -48,15 +48,16 @@ const webSocket = async (app) => {
                 if (decryptedMessage) {
                     // if(!clients.has(JSON.stringify(clientPublicKeyPem)))  clients.add( {[JSON.stringify(clientPublicKeyPem)]: ws})
     
-                    Object.keys(testD).forEach((clientPubKey) => {
+                    Object.keys(clientsList).forEach((clientPubKey) => {
                         const encryptedResponse = encryptMessage(`Echo: ${decryptedMessage}`, JSON.parse(clientPubKey));
                         // ws.send(JSON.stringify({ encryptedMessage: encryptedResponse }));
-                        testD[clientPubKey].send(JSON.stringify({ encryptedMessage: encryptedResponse }))
+                        clientsList[clientPubKey].send(JSON.stringify({ encryptedMessage: encryptedResponse }))
                     })
                 }
             });
     
             ws.on('close', () => {
+                delete clientsList[ws];
                 console.log('Client disconnected');
             });
         });
