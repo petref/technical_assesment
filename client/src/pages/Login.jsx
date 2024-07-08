@@ -3,7 +3,6 @@ import { Container, TextField, Button, Box, Typography, Paper } from '@mui/mater
 import { styled } from '@mui/system';
 
 import { useAuth } from '../context/withAuth';
-import { redirect } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
 
