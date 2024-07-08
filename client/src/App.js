@@ -8,6 +8,7 @@ import Layout from './layout';
 import Login from './pages/Login';
 import Dashboard from "./pages/Dashboard";
 import NotFound from './pages/NotFound';
+import ProtectedRoute from './HOC/withProtectedRoute';
 
 // Generate client key pair
 const clientKeypair = forge.pki.rsa.generateKeyPair(2048);
@@ -24,6 +25,7 @@ const App = () => {
   useEffect(() => {
     if (token) {
       const ws = new WebSocketFacade('wss://localhost:8080', clientPublicKeyPem, clientPrivateKeyPem);
+
       ws.addEventListener('open', () => {
         console.log('WebSocket connection opened');
       });
@@ -65,10 +67,11 @@ const App = () => {
       <div className="App">
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route exact element={<ProtectedRoute />} />
+              <Route path='/dashboard' element={<Dashboard />} />
+            </Route>
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
-          </Route>
         </Routes>
       </div>
       {/* {!token && <button onClick={handleLogin}>Login</button>}
