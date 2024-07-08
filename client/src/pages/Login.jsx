@@ -1,7 +1,11 @@
-// src/Login.js
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Container, TextField, Button, Box, Typography, Paper } from '@mui/material';
 import { styled } from '@mui/system';
+
+import { useAuth } from '../context/withAuth';
+import { redirect } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
 
 const Root = styled('div')(({ theme }) => ({
     height: '100vh',
@@ -38,14 +42,25 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
 }));
 
 const Login = () => {
+    const { handleLogin } = useAuth();
+    let navigate = useNavigate();
 
-    const handleLogin = async () => {
-        const response = await axios.post('https://localhost:8080/login', {
-            username: 'user',
-            password: 'password'
-        });
-        setToken(response.data.token);
-    };
+    const [email, setEmail] = useState(null);
+    const [password, setPassword] = useState(null);
+
+    const { token } = useAuth();
+
+    useEffect(() => {
+        console.log(token)
+        if(token) navigate("/dashboard")
+ 
+    }, [token])
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleLogin(email, password);
+    }
+  
     return (
         <Root>
             <Container component="main" maxWidth="xs">
@@ -64,6 +79,8 @@ const Login = () => {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            value={email || ""}
+                            onChange={({target}) => setEmail(target?.value)}
                         />
                         <TextFieldStyled
                             variant="outlined"
@@ -75,12 +92,15 @@ const Login = () => {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            value={password || ""}
+                            onChange={({target}) => setPassword(target?.value)}
                         />
                         <ButtonStyled
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
+                            onClick={(e) => handleSubmit(e)}
                         >
                             Sign In
                         </ButtonStyled>
