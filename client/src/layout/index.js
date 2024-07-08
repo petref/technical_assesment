@@ -5,16 +5,7 @@ import Sidebar from "../components/Sidebar/";
 
 const Layout = () => {
     const [isDrawerOpen, setHandleDrawer] = useState(false);
-    const toggleDrawer = (open) => (event) => {
-        if (
-          event &&
-          event.type === 'keydown' &&
-          (event.key === 'Tab' || event.key === 'Shift')
-        ) {
-          return;
-        }
     
-      };
     return (
     <div>
         <Topbar setSideBar={() => setHandleDrawer(!isDrawerOpen)}/>
