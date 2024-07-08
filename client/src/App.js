@@ -2,11 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import WebSocketFacade from './libs/wss';
 import forge from 'node-forge';
+import { Route, Routes } from "react-router-dom";
+
+import Layout from './layout';
+import Login from './pages/Login';
+import Dashboard from "./pages/Dashboard";
+import NotFound from './pages/NotFound';
 
 // Generate client key pair
 const clientKeypair = forge.pki.rsa.generateKeyPair(2048);
 const clientPublicKeyPem = forge.pki.publicKeyToPem(clientKeypair.publicKey);
 const clientPrivateKeyPem = forge.pki.privateKeyToPem(clientKeypair.privateKey);
+
 
 const App = () => {
   const [token, setToken] = useState(null);
@@ -55,7 +62,16 @@ const App = () => {
 
   return (
     <div>
-      {!token && <button onClick={handleLogin}>Login</button>}
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </div>
+      {/* {!token && <button onClick={handleLogin}>Login</button>}
       {token && (
         <div>
           <input
@@ -70,7 +86,7 @@ const App = () => {
             ))}
           </ul>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
