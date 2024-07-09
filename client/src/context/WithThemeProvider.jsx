@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { useDarkMode } from './withDarkModeContext';
+import { useDarkMode } from './WithDarkModeContext';
 import CssBaseline from '@mui/material/CssBaseline';
 
 const WithThemeProvider = ({ children }) => {

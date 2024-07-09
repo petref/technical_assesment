@@ -1,4 +1,4 @@
-import { useDarkMode } from '../../context/withDarkModeContext';
+import { useDarkMode } from '../../context/WithDarkModeContext';
 import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import { TopBarButton } from '../ui/Buttons';
