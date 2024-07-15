@@ -1,6 +1,6 @@
 import server from "./services/express.js";
 
-import webSocket from "./services/websocket.js";
+import webSocket from "./services/websocket/websocket.js";
 import connectDB from "./database/index.js";
 
 webSocket(server);
