@@ -1,6 +1,6 @@
-import { IconButton } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 
-const TopBarButton = ({ setSideBar, icon }) => {
+const TopBarButton = ({ setSideBar, icon, text }) => {
     return (
         <IconButton
             size="large"
@@ -10,7 +10,15 @@ const TopBarButton = ({ setSideBar, icon }) => {
             sx={{ mr: 2 }}
             onClick={setSideBar}
           >
-            {icon}
+            <div style={{display: "flex", flexDirection:"column"}}>
+            {icon} 
+            <Typography
+              variant="h6"
+              fontSize="0.8rem"
+            >
+              {text}
+            </Typography>
+            </div>
           </IconButton>
     )
 }
