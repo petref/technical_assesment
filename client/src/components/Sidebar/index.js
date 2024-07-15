@@ -11,6 +11,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import { useWebSocket } from '../../context/WithWebSocket';
 
 
 
@@ -23,11 +24,12 @@ const TabButton = styled(Button)(({ theme }) => ({
 const ButtonContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
     justifyContent: 'center',
-  }));
+}));
 
 const SwipeableTemporaryDrawer = ({ setSideBar, isDrawerOpen }) => {
 
     const [selectedList, setSelectedList] = useState('list1');
+    const { rooms, users } = useWebSocket();
 
     const handleListChange = (list) => {
         setSelectedList(list);
@@ -80,11 +82,6 @@ const SwipeableTemporaryDrawer = ({ setSideBar, isDrawerOpen }) => {
             </List>
         </Box>
     );
-
-
-    const list1 = ['Item 1', 'Item 2', 'Item 3'];
-    const list2 = ['Item A', 'Item B', 'Item C'];
-
     return (
         <div>
             <>
@@ -105,16 +102,21 @@ const SwipeableTemporaryDrawer = ({ setSideBar, isDrawerOpen }) => {
                             variant={selectedList === 'list2' ? 'contained' : 'outlined'}
                             onClick={() => handleListChange('list2')}
                         >
-                           Utilizatori
+                            Utilizatori
                         </TabButton>
                     </ButtonContainer>
-                    <List>
-                        {(selectedList === 'list1' ? list1 : list2).map((item, index) => (
-                            <ListItem button key={index}>
-                                <ListItemText primary={item} />
-                            </ListItem>
-                        ))}
-                    </List>
+                        {(rooms && users) && (selectedList === 'list1'
+                            ? rooms.map((room) => (
+                                <ListItem button key={room._id}>
+                                    <ListItemText primary={room.roomName} />
+                                </ListItem>
+                            ))
+                            : users.map((item, index) => (
+                                <ListItem button key={item._id}>
+                                    <ListItemText primary={item.name} />
+                                </ListItem>
+                            ))
+                        )}
                     {/* {list("left")} */}
                 </SwipeableDrawer>
             </>
