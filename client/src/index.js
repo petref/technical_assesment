@@ -5,8 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import WithThemeProvider from './context/WithThemeProvider';
-import { DarkModeProvider } from './context/withDarkModeContext';
-import { AuthProvider } from './context/withAuth';
+import { DarkModeProvider } from './context/WithDarkModeContext';
+import { AuthProvider } from './context/WithAuth';
+import { WebSocketProvider } from './context/WithWebSocket';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -14,11 +15,13 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <DarkModeProvider>
-          <WithThemeProvider>
-            <App />
-          </WithThemeProvider>
-        </DarkModeProvider>
+        <WebSocketProvider>
+          <DarkModeProvider>
+            <WithThemeProvider>
+              <App />
+            </WithThemeProvider>
+          </DarkModeProvider>
+        </WebSocketProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
