@@ -1,19 +1,29 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-// import rooms from '../services/wss/handlers/rooms';
+import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
 // import WebSocketFacade from '../libs/wss';
-import wSocket from '../services/wss/index';
+import wSocket, { ADD_USER_TO_ROOM, GET_ROOM } from '../services/wss/index';
 import { useAuth } from './WithAuth';
+
 
 const WebSocketContext = createContext();
 
 export const useWebSocket = () => useContext(WebSocketContext);
 
 
+
 export const WebSocketProvider = ({ children }) => {
   const [roomsData, setRooms] = useState(null);
-  const [userData, setUser] = useState(null);
+  const [roomData, setRoom] = useState(null);
+  const roomRef = useRef(false);
 
-  const {token} = useAuth();
+  roomRef.current = roomData;
+
+  const [userData, setUser] = useState(null);
+  const [wsD, setWS] = useState(null);
+
+  const { token } = useAuth();
+
+
+
 
   useEffect(() => {
     if (token) {
@@ -28,12 +38,17 @@ export const WebSocketProvider = ({ children }) => {
 
         // console.log(typeof JSON.parse(message));
         // console.log(JSON.parse(message));
+        if (!message) return;
+        const data = JSON.parse(JSON.stringify(message));
+        console.log(data);
 
         const parsedMessage = JSON.parse(message);
-        console.log(parsedMessage)
-        console.log("ok")
-        if(parsedMessage.method === "GET_ROOMS") setRooms(parsedMessage.result);
-        if(parsedMessage.method === "GET_USERS") setUser(parsedMessage.result);
+        if (parsedMessage.method == "GET_ROOMS") setRooms(parsedMessage.result);
+        if (parsedMessage.method == "GET_USERS") setUser(parsedMessage.result);
+        if (parsedMessage.method == "GET_ROOM") {
+          setRoom(parsedMessage.result)
+        };
+
 
         //   console.log(roomsData)
       });
@@ -47,12 +62,13 @@ export const WebSocketProvider = ({ children }) => {
       });
 
       ws.connect(token)
+      setWS(ws);
 
     }
   }, [token]);
 
   return (
-    <WebSocketContext.Provider value={{ rooms: roomsData, users: userData}}>
+    <WebSocketContext.Provider value={{ rooms: roomsData, users: userData, roomData, roomRef, ADD_USER_TO_ROOM, GET_ROOM, wsD }}>
       {children}
     </WebSocketContext.Provider>
   );
