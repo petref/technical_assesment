@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, TextField, Button, Box, Typography, Paper } from '@mui/material';
 import { styled } from '@mui/system';
 
-import { useAuth } from '../context/withAuth';
+import { useAuth } from '../context/WithAuth';
 import { useNavigate } from "react-router-dom";
 
 
@@ -41,18 +41,15 @@ const ButtonStyled = styled(Button)(({ theme }) => ({
 }));
 
 const Login = () => {
-    const { handleLogin } = useAuth();
+    const { handleLogin, token } = useAuth();
     let navigate = useNavigate();
 
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
 
-    const { token } = useAuth();
-
     useEffect(() => {
-        console.log(token)
         if(token) navigate("/dashboard")
- 
+
     }, [token])
     
     const handleSubmit = (e) => {
