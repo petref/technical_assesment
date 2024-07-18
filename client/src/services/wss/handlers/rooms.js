@@ -25,6 +25,14 @@ const room = {
             id: "",
         });
     },
+    getRoom(roomName) {
+        return JSON.stringify({
+            jsonrpc: "2.0",
+            method: "GET_ROOM",
+            params: {roomName},
+            id: "",
+        });
+    },
     addUserToRoom(userName, roomName) {
         return JSON.stringify({
             jsonrpc: "2.0",
