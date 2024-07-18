@@ -8,12 +8,16 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     // const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
+    const [userNames, setUserName] = useState(null);
+
 
     useEffect(() => {
         // Check if user is logged in when the component mounts
         const loggedUser = localStorage.getItem('user');
-        if (loggedUser) {
+        const userName = localStorage.getItem("userName");
+        if (loggedUser && userName) {
             setToken(JSON.parse(loggedUser));
+            setUserName(JSON.parse(userName));
         }
     }, []);
     
@@ -25,6 +29,7 @@ export const AuthProvider = ({ children }) => {
             }).then((res) => {
                 console.log(res)
                 localStorage.setItem('user', JSON.stringify(res.data.token));
+                localStorage.setItem('userName', JSON.stringify(username));
                 setToken(res.data.token);
             });
         } catch(err) {
@@ -38,7 +43,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ token, handleLogin, logout }}>
+        <AuthContext.Provider value={{ token, userNames, handleLogin, logout }}>
             {children}
         </AuthContext.Provider>
     );
